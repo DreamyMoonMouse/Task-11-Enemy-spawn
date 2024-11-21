@@ -1,17 +1,18 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Serialization;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private float spawnInterval = 2f;
+    [SerializeField] private GameObject _enemyPrefab;
+    SerializeField] private Transform[] _spawnPoints;
+    [SerializeField] private float _spawnInterval = 2f;
 
-    private Coroutine spawnCoroutine;
+    private Coroutine _spawnCoroutine;
 
     private void Start()
     {
-        spawnCoroutine = StartCoroutine(SpawnEnemies());
+        _spawnCoroutine = StartCoroutine(SpawnEnemies());
     }
 
     private IEnumerator SpawnEnemies()
@@ -20,28 +21,24 @@ public class EnemySpawner : MonoBehaviour
         
         while (isRunning)
         {
-            Transform randomSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            GameObject enemy = Instantiate(enemyPrefab, randomSpawnPoint.position, Quaternion.identity);
+            Transform randomSpawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)];
+            GameObject enemy = Instantiate(_enemyPrefab, randomSpawnPoint.position, Quaternion.identity);
             
             if (enemy.TryGetComponent(out EnemyMover enemyMover))
             {
                 Vector3 spawnDirection = randomSpawnPoint.forward;
                 enemyMover.SetDirection(spawnDirection);
             }
-            else
-            {
-                Debug.Log("Ошибка");
-            }
             
-            yield return new WaitForSeconds(spawnInterval);
+            yield return new WaitForSeconds(_spawnInterval);
         }
     }
 
     private void OnDestroy()
     {
-        if (spawnCoroutine != null)
+        if (_spawnCoroutine != null)
         {
-            StopCoroutine(spawnCoroutine);
+            StopCoroutine(_spawnCoroutine);
         }
     }
 }
