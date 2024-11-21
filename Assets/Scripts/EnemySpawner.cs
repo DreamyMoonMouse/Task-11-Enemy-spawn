@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab;
-    SerializeField] private Transform[] _spawnPoints;
+    [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private float _spawnInterval = 2f;
 
     private Coroutine _spawnCoroutine;
